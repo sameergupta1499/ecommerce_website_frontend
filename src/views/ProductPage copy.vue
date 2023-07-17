@@ -3,8 +3,7 @@
     <HeaderComponent />
     <main id="search-base">
       <div id="search-filters-container">
-        <ProductFilters :productData="productData" :activeFilterData="activeFilterData"
-          @update:selected-gender="handleSelectedOptionUpdate" />
+        <ProductFilters :productData="productData" />
       </div>
 
       <div id="search-product-container">
@@ -21,7 +20,7 @@ import { useStore } from "vuex";
 import ProductCards from "@/components/pages/products/ProductCards";
 import ProductFilters from "@/components/pages/products/ProductFilters";
 import HeaderComponent from "@/components/layout/HeaderComponent";
-// import { useRouter } from "vue-router";
+import { useRouter  } from "vue-router";
 
 export default {
   props: {
@@ -35,36 +34,44 @@ export default {
     const store = useStore();
     // Define productData as a computed property
     const productData = ref(store.state.productData);
-    const activeFilterData = ref(store.state.activeFilters);
-    const fetchDataWrapper = async (page,params) => {
+    const router = useRouter();
+    onMounted(async () => {
       try {
-        console.log(props.page,"props.page",params)
-        const data = await fetchProducts(page,params);
+        const data = await fetchProducts({"page":props.page});
         store.commit("setProductData", data); // Assuming you have a mutation named SET_PRODUCTS in your Vuex store
         productData.value = data; // Update the value of the ref
+
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    });
+
+    watch(() => props.page, () => {
+      // router.push('/footwear');
+      const getproducts = async () => {
+      try {
+        const data = await fetchProducts({"page":props.page});
+        store.commit("setProductData", data); // Assuming you have a mutation named SET_PRODUCTS in your Vuex store
+        productData.value = data; // Update the value of the ref
+        console.log("fetched from watch")
+
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     }
-    onMounted(() => fetchDataWrapper(props.page,activeFilterData.value));
-
-    watch(() => props.page, () => fetchDataWrapper(props.page,activeFilterData.value), { deep: true });
-    watch(() => activeFilterData, () => fetchDataWrapper(props.page,activeFilterData.value), { deep: true });
-
-    function handleSelectedOptionUpdate(newValue) {
-      store.commit("updateActiveFilter", newValue);
-      activeFilterData.value = newValue;  
-    }
-    return {
-      productData,
-      activeFilterData,
-      handleSelectedOptionUpdate
-    };
+    getproducts()
+      console.log(router)
+      // console.log('newValueherepage:', newValue); // Log the updated value of productData
+      // console.log('oldValueherepage:', oldValue); // Log the previous value of productData
+    },
+      { deep: true });
+    // watch(props.page)
+    return { productData };
   },
   components: {
     ProductCards,
     ProductFilters,
-    HeaderComponent
+    HeaderComponent,
   },
 };
 </script>
@@ -86,4 +93,5 @@ export default {
     flex-direction: column;
     /* Stack items vertically */
   }
-}</style>
+}
+</style>

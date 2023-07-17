@@ -1,0 +1,68 @@
+<template>
+  <div id="header-container">
+    <div id="header-logo-container">
+      <a href="" class="logo-link">
+        <img src="@/assets/logo.png" id="logo-img" alt="Logo" />
+      </a>
+    </div>
+    <div id="header-navbar">
+      <ul id="navbar-container">
+        <li id="navbar-item"><router-link to="/clothing-and-apparels">CLOTHING</router-link></li>
+        <li id="navbar-item"><router-link to="/footwear">FOOTWEAR</router-link></li>
+        <li id="navbar-item"><router-link to="/home-furnishing">HOME & LIVING</router-link></li>
+        <li id="navbar-item"><router-link to="/personal-care">PERSONAL CARE</router-link></li>
+        <li id="navbar-item"><router-link to="/toys-and-games">TOYS AND GAMES</router-link></li>
+        <li id="navbar-item"><router-link to="/accessories">ACCESSORIES</router-link></li>
+      </ul>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  setup() {
+
+    return {};
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+@import "@/styles/globals.scss";
+
+#logo-img{
+  width: 53px;
+  height: 36px; 
+}
+
+#header-container {
+  z-index: 100;
+  display: flex;
+  position: fixed;
+  flex-direction: row;
+  max-height: $header-height;
+  min-height: $header-height;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background:white;
+  align-items: center;
+  font-weight: 700;
+}
+#navbar-container {
+  display: flex;
+  flex-direction: row;
+  
+}
+#navbar-item {
+  padding: 0 17px;
+}
+#header-logo-container {
+  width: 53px;
+  height: 36px; 
+  margin-left: 4%;
+}
+#header-navbar{
+  margin:0 0 0 3.5%;
+}
+</style>

@@ -3,7 +3,12 @@ import { createStore } from 'vuex';
 const store = createStore({
   state() {
     return {
-      counter: 0,
+      activeFilters:{
+        brands:[],
+        category:[],
+        sortBy:"",
+        gender:""
+      },
       productData: {
         count: 0,
         current_page: 1,
@@ -17,20 +22,17 @@ const store = createStore({
     };
   },
   getters: {
-    getCounter(state) {
-      return state.counter;
-    },
     getProductData(state) {
       return state.productData;
     }
   },
   mutations: {
-    increment(state, payload) {
-      state.counter = state.counter + payload;
-    },
     setProductData(state, payload) {
       state.productData = payload;
-    }
+    },
+    updateActiveFilter(state, newValue) {
+        state.activeFilters = newValue;
+      },
   },
   actions: {
     increment(context, payload) {
