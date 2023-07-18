@@ -46,7 +46,7 @@ export default {
         console.error("Error fetching products:", error);
       }
     }
-    onMounted(() => fetchDataWrapper(props.page,activeFilterData.value));
+    onMounted(() => {fetchDataWrapper(props.page,activeFilterData.value));
 
     watch(() => props.page, () => fetchDataWrapper(props.page,activeFilterData.value), { deep: true });
     watch(() => activeFilterData, () => fetchDataWrapper(props.page,activeFilterData.value), { deep: true });
