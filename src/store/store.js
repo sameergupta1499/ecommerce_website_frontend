@@ -3,11 +3,11 @@ import { createStore } from 'vuex';
 const store = createStore({
   state() {
     return {
-      activeFilters:{
-        brands:[],
-        category:[],
-        sortBy:"",
-        gender:""
+      activeFilters: {
+        brands: [],
+        category: [],
+        sortBy: "",
+        gender: ""
       },
       productData: {
         count: 0,
@@ -18,7 +18,8 @@ const store = createStore({
         category: [],
         results: [],
         seller: []
-      }
+      },
+      currentFullPath:""
     };
   },
   getters: {
@@ -31,8 +32,19 @@ const store = createStore({
       state.productData = payload;
     },
     updateActiveFilter(state, newValue) {
-        state.activeFilters = newValue;
-      },
+      state.activeFilters = newValue;
+    },
+    updateCurrentFullPath(state, newValue) {
+      state.currentFullPath = newValue;
+    },
+    clearAllFilter(state) {
+      state.activeFilters = {
+        brands: [],
+        category: [],
+        sortBy: "",
+        gender: ""
+      }
+    }
   },
   actions: {
     increment(context, payload) {

@@ -61,11 +61,11 @@ export default {
     };
 
     watch(selectedItems, (newValue) => {
-      console.log("inside product filter modal:", selectedItems, newValue)
       emit('update:selected-items', newValue, props.filter_type);
     }, { deep: true });
 
     watch(()=>props.activeList, (newValue) => {
+
       selectedItems.value = newValue
     }, { deep: true });
 

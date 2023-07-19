@@ -7,12 +7,12 @@
     </div>
     <div id="header-navbar">
       <ul id="navbar-container">
-        <li id="navbar-item"><router-link to="/clothing-and-apparels">CLOTHING</router-link></li>
-        <li id="navbar-item"><router-link to="/footwear">FOOTWEAR</router-link></li>
-        <li id="navbar-item"><router-link to="/home-furnishing">HOME & LIVING</router-link></li>
-        <li id="navbar-item"><router-link to="/personal-care">PERSONAL CARE</router-link></li>
-        <li id="navbar-item"><router-link to="/toys-and-games">TOYS AND GAMES</router-link></li>
-        <li id="navbar-item"><router-link to="/accessories">ACCESSORIES</router-link></li>
+        <li id="navbar-item"><router-link to="/clothing-and-apparels/">CLOTHING</router-link></li>
+        <li id="navbar-item"><router-link to="/footwear/">FOOTWEAR</router-link></li>
+        <li id="navbar-item"><router-link to="/home-furnishing/">HOME & LIVING</router-link></li>
+        <li id="navbar-item"><router-link to="/personal-care/">PERSONAL CARE</router-link></li>
+        <li id="navbar-item"><router-link to="/toys-and-games/">TOYS AND GAMES</router-link></li>
+        <li id="navbar-item"><router-link to="/accessories/">ACCESSORIES</router-link></li>
       </ul>
     </div>
   </div>

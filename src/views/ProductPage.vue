@@ -21,7 +21,7 @@ import { useStore } from "vuex";
 import ProductCards from "@/components/pages/products/ProductCards";
 import ProductFilters from "@/components/pages/products/ProductFilters";
 import HeaderComponent from "@/components/layout/HeaderComponent";
-// import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 
 export default {
   props: {
@@ -33,27 +33,56 @@ export default {
 
   setup(props) {
     const store = useStore();
+    const route = useRoute();
     // Define productData as a computed property
+    const router = useRouter();
     const productData = ref(store.state.productData);
     const activeFilterData = ref(store.state.activeFilters);
-    const fetchDataWrapper = async (page,params) => {
+    const fetchDataWrapper = async (page, params) => {
       try {
-        console.log(props.page,"props.page",params)
-        const data = await fetchProducts(page,params);
-        store.commit("setProductData", data); // Assuming you have a mutation named SET_PRODUCTS in your Vuex store
-        productData.value = data; // Update the value of the ref
+
+
+        const updatedQueryParams = {};
+
+
+        Object.entries(params).forEach(([key, value]) => {
+          if (Array.isArray(value) && value.length > 0) {
+            // Join non-empty array values with comma-separated values
+            updatedQueryParams[key] = value.join(",");
+          } else if (value !== "") {
+            updatedQueryParams[key] = value;
+          }
+        });
+        await router.push({ query: updatedQueryParams });
+        let current_full_path = route.fullPath;
+        if (current_full_path != store.state.currentFullPath) {
+          store.commit("updateCurrentFullPath", current_full_path);
+          const data = await fetchProducts(page, updatedQueryParams);
+          store.commit("setProductData", data); // Assuming you have a mutation named SET_PRODUCTS in your Vuex store
+          productData.value = data; // Update the value of the ref
+        }
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     }
-    onMounted(() => fetchDataWrapper(props.page,activeFilterData.value));
+    onMounted(() => {
+      //logic for deserialization of url and update both active filters and products according to the params
+      fetchDataWrapper(props.page, activeFilterData.value)
+    });
 
-    watch(() => props.page, () => fetchDataWrapper(props.page,activeFilterData.value), { deep: true });
-    watch(() => activeFilterData, () => fetchDataWrapper(props.page,activeFilterData.value), { deep: true });
+    watch(() => props.page, () => {
+      store.commit("clearAllFilter");
+      activeFilterData.value = store.state.activeFilters;
+      console.log("props.page", activeFilterData.value);
+    });
+    watch(() => activeFilterData, () => {
+      fetchDataWrapper(props.page, activeFilterData.value)
+      console.log("Inside activeFilterData")
+    }, { deep: true });
 
     function handleSelectedOptionUpdate(newValue) {
       store.commit("updateActiveFilter", newValue);
-      activeFilterData.value = newValue;  
+      activeFilterData.value = newValue;
     }
     return {
       productData,
@@ -86,4 +115,5 @@ export default {
     flex-direction: column;
     /* Stack items vertically */
   }
-}</style>
+}
+</style>

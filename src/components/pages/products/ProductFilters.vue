@@ -86,12 +86,11 @@ export default {
 
     // Watch for changes in selectedOptions and emit the event to the parent component
     watch(selectedOptions, (newValue) => {
-      console.log("inside watch productfilters selectedoptions.", selectedOptions, newValue)
+      console.log("ProductFilter selectedOptions",selectedOptions,newValue)
       emit('update:selected-gender', newValue);
     }, { deep: true });
 
     function handleSelectedItemsUpdate(newValue,filter_type) {
-      console.log("inside product filters handle selecteditems update",newValue,filter_type)
       if (filter_type=="category"){
         selectedOptions.value.category = newValue;
       }
