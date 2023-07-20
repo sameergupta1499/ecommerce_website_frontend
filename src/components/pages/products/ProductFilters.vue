@@ -32,12 +32,13 @@
           </template>
         </li>
       </ul>
-      <div class="list-more" v-if="productData.category.length > 8">
+      <div class="list-more" v-if="productData.category.length > 8"
+        @click="isModalVisible.category = !isModalVisible.category">
         +{{ productData.category.length - 8 }} more
       </div>
-      <div v-if="productData.category && productData.category.length > 0">
-        <ProductFiltersModal :items="productData.category" filter_type="category" :activeList="activeFilterData.category" 
-        @update:selected-items="handleSelectedItemsUpdate" />/>
+      <div v-if="productData.category && productData.category.length > 0" v-show="isModalVisible.category" ref="categoryModalRef">
+        <ProductFiltersModal :items="productData.category" filter_type="category" :activeList="activeFilterData.category"
+          @update:selected-items="handleSelectedItemsUpdate" @event:close-modal="closeModal"/>/>
       </div>
     </div>
 
@@ -54,12 +55,12 @@
           </template>
         </li>
       </ul>
-      <div class="list-more" v-if="productData.seller.length > 8">
+      <div class="list-more" v-if="productData.seller.length > 8" @click="isModalVisible.brand = !isModalVisible.brand">
         <span>+{{ productData.seller.length - 8 }} more</span>
       </div>
-      <div v-if="productData.seller && productData.seller.length > 0">
-        <ProductFiltersModal :items="productData.seller" filter_type="brand" :activeList="activeFilterData.brands" 
-        @update:selected-items="handleSelectedItemsUpdate" />/>
+      <div v-if="productData.seller && productData.seller.length > 0" v-show="isModalVisible.brand" ref="brandModalRef">
+        <ProductFiltersModal :items="productData.seller" filter_type="brand" :activeList="activeFilterData.brands"
+          @update:selected-items="handleSelectedItemsUpdate" @event:close-modal="closeModal"/>/>
       </div>
     </div>
 
@@ -67,9 +68,10 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import { convertToCamelCase } from '@/services/utils';
 import ProductFiltersModal from "@/components/pages/products/ProductFiltersModal";
+import { onClickOutside } from '@vueuse/core'
 export default {
   props: {
     productData: {
@@ -81,29 +83,37 @@ export default {
       required: true,
     },
   },
-  setup(props, { emit }) {
-    const selectedOptions = ref(props.activeFilterData)
-
-    // Watch for changes in selectedOptions and emit the event to the parent component
-    watch(selectedOptions, (newValue) => {
-      console.log("ProductFilter selectedOptions",selectedOptions,newValue)
-      emit('update:selected-gender', newValue);
-    }, { deep: true });
-
-    function handleSelectedItemsUpdate(newValue,filter_type) {
-      if (filter_type=="category"){
+  setup(props) {
+    const selectedOptions = ref(props.activeFilterData)   // selectedOption is a reference, so any changes made to it will be reflected in parent activeFilterData
+    const isModalVisible = ref({
+      category: false,
+      brand: false
+    });
+    const categoryModalRef = ref(null)
+    const brandModalRef = ref(null)
+    function handleSelectedItemsUpdate(newValue, filter_type) {
+      if (filter_type == "category") {
         selectedOptions.value.category = newValue;
       }
-      else if (filter_type=="brand"){
+      else if (filter_type == "brand") {
         selectedOptions.value.brands = newValue;
       }
-        
     }
+    function closeModal(){
+      isModalVisible.value.category = false;
+      isModalVisible.value.brand = false;
+    }
+    onClickOutside(categoryModalRef,()=>isModalVisible.value.category = false);
+    onClickOutside(brandModalRef,()=>isModalVisible.value.brand = false);
 
     return {
       selectedOptions,
       convertToCamelCase,
-      handleSelectedItemsUpdate
+      handleSelectedItemsUpdate,
+      isModalVisible,
+      categoryModalRef,
+      brandModalRef,
+      closeModal
     };
   },
   components: {
@@ -129,12 +139,15 @@ export default {
   flex-direction: column;
 
 }
-.categories-container{
+
+.categories-container {
   position: relative;
 }
-.brand-container{
+
+.brand-container {
   position: relative;
 }
+
 .vertical-filters-filters {
   padding: 20px 0 15px 25px;
   font-weight: 700;
@@ -178,7 +191,10 @@ input[type="checkbox" i] {
   visibility: hidden;
   font-weight: 400;
 }
-
+.modal{
+  max-height: 568px;
+  min-height: 568px;
+}
 .common-checkboxIndicator:after {
   content: "";
   position: absolute;

@@ -37,7 +37,7 @@ export default {
     // Define productData as a computed property
     const router = useRouter();
     const productData = ref(store.state.productData);
-    const activeFilterData = ref(store.state.activeFilters);
+    let activeFilterData = ref(store.state.activeFilters);
     const fetchDataWrapper = async (page, params) => {
       try {
 
@@ -73,16 +73,13 @@ export default {
     watch(() => props.page, () => {
       store.commit("clearAllFilter");
       activeFilterData.value = store.state.activeFilters;
-      console.log("props.page", activeFilterData.value);
     });
-    watch(() => activeFilterData, () => {
-      fetchDataWrapper(props.page, activeFilterData.value)
-      console.log("Inside activeFilterData")
+    watch(() => activeFilterData, (newValue) => {
+      fetchDataWrapper(props.page, newValue.value)
     }, { deep: true });
 
     function handleSelectedOptionUpdate(newValue) {
       store.commit("updateActiveFilter", newValue);
-      activeFilterData.value = newValue;
     }
     return {
       productData,

@@ -38,18 +38,13 @@ const store = createStore({
       state.currentFullPath = newValue;
     },
     clearAllFilter(state) {
-      state.activeFilters = {
-        brands: [],
-        category: [],
-        sortBy: "",
-        gender: ""
-      }
+      state.activeFilters.brands = [];
+      state.activeFilters.category = [];
+      state.activeFilters.sortBy = "";
+      state.activeFilters.gender = "";
     }
   },
   actions: {
-    increment(context, payload) {
-      context.commit('increment', payload);
-    },
     fetchProductData(context, payload) {
       context.commit('setProductData', payload);
     }
