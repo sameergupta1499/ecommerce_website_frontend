@@ -1,14 +1,16 @@
 import { createStore } from 'vuex';
+export const initialActiveFilters = {
+  brands: [],
+  category: [],
+  ordering: "",
+  gender: "",
+  p: ""
+};
 
 const store = createStore({
   state() {
     return {
-      activeFilters: {
-        brands: [],
-        category: [],
-        sortBy: "",
-        gender: ""
-      },
+      activeFilters:  { ...initialActiveFilters },
       productData: {
         count: 0,
         current_page: 1,
@@ -40,8 +42,9 @@ const store = createStore({
     clearAllFilter(state) {
       state.activeFilters.brands = [];
       state.activeFilters.category = [];
-      state.activeFilters.sortBy = "";
+      state.activeFilters.ordering = "";
       state.activeFilters.gender = "";
+      state.activeFilters.p ="";
     }
   },
   actions: {

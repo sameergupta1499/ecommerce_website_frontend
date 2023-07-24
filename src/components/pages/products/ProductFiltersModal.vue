@@ -65,8 +65,7 @@ export default {
     }, { deep: true });
 
     watch(()=>props.activeList, (newValue) => {
-      console.log("i am here")
-      selectedItems.value = newValue;
+      selectedItems.value = newValue;  //value changed inside wathc and computed properties doesn't trigger a watch even, so watch(selectedItems, (newValue) won't be triggered in this case
     }, { deep: true });
 
     function closeModal(){
@@ -183,7 +182,7 @@ img{
 }
 
 .vertical-filters-filters {
-  padding: 20px 0 15px 25px;
+  padding: $page-left-padding;
   font-weight: 700;
   border-bottom: $page-section-border;
   border-right: $page-section-border;

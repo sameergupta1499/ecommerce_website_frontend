@@ -1,7 +1,8 @@
 <template>
   <div id="filter-flex-container">
     <div class="header-container vertical-filters-filters">
-      <span class="header-title">FILTERS</span>
+      <span class="header-title" >FILTERS</span>
+      <span v-if="shouldShowClearAll()" class="header-clearAllBtn" @click="handleClearAllClick">CLEAR ALL</span>
     </div>
     <div v-if="productData.seller && productData.seller.length > 0">
     </div>
@@ -82,8 +83,11 @@ export default {
       type: Object,
       required: true,
     },
+    currentPath: {
+      type: String,
+    },
   },
-  setup(props) {
+  setup(props,{emit}) {
     const selectedOptions = ref(props.activeFilterData)   // selectedOption is a reference, so any changes made to it will be reflected in parent activeFilterData
     const isModalVisible = ref({
       category: false,
@@ -99,9 +103,20 @@ export default {
         selectedOptions.value.brands = newValue;
       }
     }
+
+    function shouldShowClearAll() {
+      if (props.currentPath.includes("?")){
+        return true;
+      }
+      return false;
+    }
+
     function closeModal(){
       isModalVisible.value.category = false;
       isModalVisible.value.brand = false;
+    }
+    function handleClearAllClick(){
+      emit('event:clear-all');
     }
     onClickOutside(categoryModalRef,()=>isModalVisible.value.category = false);
     onClickOutside(brandModalRef,()=>isModalVisible.value.brand = false);
@@ -113,7 +128,9 @@ export default {
       isModalVisible,
       categoryModalRef,
       brandModalRef,
-      closeModal
+      closeModal,
+      handleClearAllClick,
+      shouldShowClearAll
     };
   },
   components: {
@@ -128,8 +145,10 @@ export default {
 .header-container {
   font-size: 16px;
   font-weight: 700;
-  padding-top: 41px !important;
+  padding-top: 17px !important;
   border-right: none !important;
+  display: inline-flex;
+    position: relative;
 }
 
 #filter-flex-container {
@@ -149,7 +168,7 @@ export default {
 }
 
 .vertical-filters-filters {
-  padding: 20px 0 15px 25px;
+  padding: $page-left-padding;
   font-weight: 700;
   border-bottom: $page-section-border;
   border-right: $page-section-border;
@@ -285,4 +304,15 @@ input[type="checkbox" i] {
   border: 1px solid #c3c2c9;
   background: #fff;
   border-radius: 2px;
-}</style>
+}
+.header-clearAllBtn {
+  position: absolute;
+    /* top: 32px; */
+    right: 10px;
+    font-weight: 700;
+    color: #ff3f6c;
+    font-size: 13px;
+    cursor: pointer;
+    padding-top: 2px;
+}
+</style>

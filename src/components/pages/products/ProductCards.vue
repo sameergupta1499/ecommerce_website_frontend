@@ -1,7 +1,10 @@
 <template>
   <div class="product-container-base">
     <div class="row-base-search">
-      <SortBy />
+      <SortBy :activeFilterData="activeFilterData" />
+    </div>
+    <div class="">
+      <ActiveFilters :activeFilterData="activeFilterData" />
     </div>
     <div id="products-flex-container">
       <div id="product-card-container" v-for="product in productData.results" :key="product.id">
@@ -12,13 +15,14 @@
         </div>
         <a href="#" target="_blank" @click.prevent>
           <img :src="product.image_list" alt="Product Image" id="product-card-img">
-          <div id="product-card-meta">
-            <div id="product-card-meta-brand">
-              {{ product.seller }}
-            </div>
-            <div id="product-card-meta-name">
-              {{ product.name }}
-            </div>
+          <div class="product-productMetaInfo">
+            <h3 class="product-brand">{{ product.seller }}</h3>
+            <h4 class="product-product">{{ product.name }}</h4>
+            <div class="product-price"><span><span class="product-discountedPrice">Rs.
+                  {{ product.price }}</span><span
+                  class="product-strike"> Rs.{{product.mrp }}</span></span><span
+                class="product-discountPercentage"> ({{product.discount}} % OFF)</span>
+              </div>
           </div>
         </a>
         <!-- <p v-if="!productData">Loading...</p>
@@ -29,12 +33,17 @@
 </template>
 
 <script>
-import {  } from 'vue';
+import { } from 'vue';
 import SortBy from '@/components/common/SortBy.vue';
+import ActiveFilters from '@/components/common/ActiveFilters.vue';
 
 export default {
   props: {
     productData: {
+      type: Object,
+      required: true,
+    },
+    activeFilterData: {
       type: Object,
       required: true,
     },
@@ -45,7 +54,8 @@ export default {
     return {};
   },
   components: {
-    SortBy
+    SortBy,
+    ActiveFilters
   },
 }
 </script>
@@ -53,10 +63,47 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles/globals.scss';
 
+.product-productMetaInfo {
+    position: relative;
+    z-index: 3;
+    background: #fff;
+    padding: 0 10px;
+    margin-top: 5px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    height: 68px;
+    overflow: hidden;
+}
+
+.product-brand {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+    color: #282c3f;
+    margin-bottom: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-transform: uppercase;
+}
+.product-product {
+    color: #535766;
+    font-size: 14px;
+    line-height: 1;
+    margin-bottom: 0;
+    margin-top: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 400;
+    display: block;
+}
+
+
 .product-container-base {
   display: flex;
   flex-direction: column;
-  min-width: 1348px;
+  max-width: $products-container-width;
 }
 
 .row-base-search {
@@ -113,4 +160,35 @@ export default {
 .rating-separator {
   margin-right: 4px;
 }
+.product-price {
+    font-size: 14px;
+    line-height: 15px;
+    color: #282c3f;
+    white-space: nowrap;
+    margin: 8px 0 6px;
+    font-weight: 700;
+}
+
+
+.product-discountedPrice {
+    font-size: 14px;
+    font-weight: 700;
+    color: #282c3f;
+
+
+}
+.product-strike {
+    text-decoration: line-through;
+    color: #7e818c;
+    font-weight: 400;
+    margin-left: 5px;
+    font-size: 12px;
+}
+.product-discountPercentage {
+    color: #ff905a;
+    font-weight: 400;
+    font-size: 12px;
+    margin-left: 5px;
+}
+
 </style>
