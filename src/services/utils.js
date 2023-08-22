@@ -56,3 +56,15 @@ export function deepCompare(obj1, obj2) {
   // If all checks passed, the objects have the same data
   return true;
 }
+
+export function parseUrlToParams(url) {
+  const urlSearchParams = new URLSearchParams(url.split("?")[1]);
+  const params = {
+    brands: urlSearchParams.get("brands") ? urlSearchParams.get("brands").split(",") : [],
+    category: urlSearchParams.get("category") ? urlSearchParams.get("category").split(",") : [],
+    ordering: urlSearchParams.get("ordering") || "",
+    gender: urlSearchParams.get("gender") || "",
+    p: parseInt(urlSearchParams.get("p")) || 1,
+  };
+  return params;
+}

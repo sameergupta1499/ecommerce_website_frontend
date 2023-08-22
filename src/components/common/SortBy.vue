@@ -1,5 +1,17 @@
 <template>
   <div class="horizontal-filters-sortContainer">
+    
+    <div class="pagination-container">
+      <div>      <v-pagination
+        v-model="selectedOptions.p"
+        :length="productData.total_pages"
+        :total-visible="7"
+        color="black"
+        size="40px" 
+      ></v-pagination></div>
+
+    </div>
+    
     <div class="sort-sortBy" @mouseover="showOptions = true" @mouseout="showOptions = false">
       Sort by: <span>{{ options[selectedOptions.ordering] || 'Recommended' }}</span>
       <span class="img-span"><img class="filter-summary-removeIcon" src="@/assets/down-arrow.png" id="down-arrow-image"
@@ -22,6 +34,10 @@ import { ref } from 'vue';
 export default {
   props: {
     activeFilterData: {
+      type: Object,
+      required: true,
+    },
+    productData: {
       type: Object,
       required: true,
     },
@@ -51,16 +67,21 @@ export default {
 @import '@/styles/globals.scss';
 
 .horizontal-filters-sortContainer {
-  display: inline-block;
-  float: right;
-  margin-right: 30px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap:wrap;
+  // float: right;
+  
+  justify-content: flex-end;
 
 }
-
+.pagination-container{
+  margin: auto;
+}
 .sort-sortBy {
   width: 255px;
   position: relative;
-  padding: 9px 14px;
+  padding: 12px 12px;
   border-radius: 2px;
   border: 1px solid #d4d5d9;
 

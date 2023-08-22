@@ -1,12 +1,30 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store/store'
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router';
+import store from './store/store';
 
-const app =  createApp(App)
+// Vuetify
+import 'vuetify/styles';
+import { createVuetify } from 'vuetify';
+import * as components from 'vuetify/lib/components';
+import * as directives from 'vuetify/lib/directives';
+// import 'vuetify/dist/vuetify.css';
+// import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import "@mdi/font/css/materialdesignicons.css";
 
-// use router
-app.use(router)
-//use vuex redux
-app.use(store)
-app.mount('#app')
+const app = createApp(App);
+
+// Using vuetify
+const vuetify = createVuetify({
+  components,
+  directives,
+  theme: { defaultTheme: 'light' },
+});
+app.use(vuetify);
+
+// Use router
+app.use(router);
+
+// Use vuex (redux)
+app.use(store);
+app.mount('#app');

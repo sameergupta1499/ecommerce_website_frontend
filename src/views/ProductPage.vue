@@ -1,8 +1,12 @@
 <template>
   <div>
+    <LoadingOverlay :loadingScreen="loadingScreen"/>
     <HeaderComponent />
     <div class="row-base">
-      <span><h1 class="title-title"> {{ convertToCamelCase(page) }} - <span ckass ="title-count">{{productData.count}} items</span></h1></span>
+      <span>
+        <h1 class="title-title"> {{ convertToCamelCase(page) }} - <span ckass="title-count">{{ productData.count }}
+            items</span></h1>
+      </span>
     </div>
     <main id="search-base">
 
@@ -25,8 +29,9 @@ import { useStore } from "vuex";
 import ProductCards from "@/components/pages/products/ProductCards";
 import ProductFilters from "@/components/pages/products/ProductFilters";
 import HeaderComponent from "@/components/layout/HeaderComponent";
+import LoadingOverlay from "@/components/common/LoadingOverlay";
 import { useRouter, useRoute } from "vue-router";
-import { convertToCamelCase } from '@/services/utils';
+import { convertToCamelCase, parseUrlToParams } from '@/services/utils';
 
 export default {
   props: {
@@ -42,11 +47,14 @@ export default {
     // Define productData as a computed property
     const router = useRouter();
     const productData = ref(store.state.productData);
+    const loadingScreen = ref(false);
     const c_path = ref(store.state.currentFullPath)
     let activeFilterData = ref(store.state.activeFilters);
+    let page_changed = false;               //if the page changes then we don't reset it to 1st page.
     const fetchDataWrapper = async (page, params) => {
       try {
         const updatedQueryParams = {};
+        // console.log(store.state.loadingScreen)
         Object.entries(params).forEach(([key, value]) => {
           if (Array.isArray(value) && value.length > 0) {
             // Join non-empty array values with comma-separated values
@@ -60,30 +68,55 @@ export default {
         if (current_full_path != store.state.currentFullPath) {
           store.commit("updateCurrentFullPath", current_full_path);
           c_path.value = current_full_path;
+          loadingScreen.value = !loadingScreen.value;
           const data = await fetchProducts(page, updatedQueryParams);
+          loadingScreen.value = !loadingScreen.value;
+
           store.commit("setProductData", data); // Assuming you have a mutation named SET_PRODUCTS in your Vuex store
           productData.value = data; // Update the value of the ref
         }
+
       } catch (error) {
         console.error("Error fetching products:", error);
+        loadingScreen.value = !loadingScreen.value;
       }
     }
     onMounted(() => {
       //logic for deserialization of url and update both active filters and products according to the params
-      fetchDataWrapper(props.page, activeFilterData.value)
+      const parsedParams = parseUrlToParams(route.fullPath);
+      console.log(parsedParams);
+      store.commit("updateInitialActiveFilter", parsedParams);
+      activeFilterData.value = store.state.activeFilters;
+      fetchDataWrapper(props.page, activeFilterData.value);// props.page coming from router
     });
     function clearAll() {
       store.commit("clearAllFilter");
       activeFilterData.value = store.state.activeFilters;
     }
-    watch(() => props.page, () => {
+    watch(() => props.page, () => {   //if we change page from let's say clothing to beauty then we are resetting activefilters
       clearAll();
     });
+
+        
+    watch(() => activeFilterData.value.p, () => {
+      page_changed=true;
+    });
+
     watch(() => activeFilterData, (newValue) => {
-      fetchDataWrapper(props.page, newValue.value)
+      if (page_changed == false) {     //if the page any filter or sorting change then setting the p to ""
+        newValue.value.p = 1;
+      }
+      page_changed=false;           //resetting page changed to false
+      fetchDataWrapper(props.page, newValue.value);
     }, { deep: true });
 
+
     function handleSelectedOptionUpdate(newValue) {
+      let oldValue = store.state.activeFilter;   //if the page any filter or sorting change then setting the p to ""
+      console.log("here2",newValue,oldValue)
+      if (newValue.p === oldValue.p) {
+        // newValue.p = 1;
+      }
       store.commit("updateActiveFilter", newValue);
     }
     return {
@@ -92,13 +125,15 @@ export default {
       handleSelectedOptionUpdate,
       clearAll,
       c_path,
-      convertToCamelCase
+      convertToCamelCase,
+      loadingScreen
     };
   },
   components: {
     ProductCards,
     ProductFilters,
-    HeaderComponent
+    HeaderComponent,
+    LoadingOverlay
   },
 };
 </script>
@@ -113,33 +148,37 @@ export default {
   margin: $page-row-margin;
   max-width: $page-max-width;
 }
+
 .row-base {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: stretch;
-    align-content: stretch;
-    margin: $page-margin;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  align-content: stretch;
+  margin: $page-margin;
   max-width: $page-max-width;
-  span{
-    padding:$page-left-padding;
-    h1{
+
+  span {
+    padding: $page-left-padding;
+
+    h1 {
       font-weight: 700;
       font-size: 16px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    color: #282c3f;
-    max-width: 400px;
-    span{
-      padding:0;
-      font-weight: 400;
-      color: #878b94;
-    }
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      color: #282c3f;
+      max-width: 400px;
+
+      span {
+        padding: 0;
+        font-weight: 400;
+        color: #878b94;
+      }
     }
   }
-  
+
 }
 
 /* Media query for small screens */
@@ -148,5 +187,4 @@ export default {
     flex-direction: column;
     /* Stack items vertically */
   }
-}
-</style>
+}</style>

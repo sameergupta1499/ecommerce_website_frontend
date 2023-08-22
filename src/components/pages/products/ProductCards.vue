@@ -1,7 +1,7 @@
 <template>
   <div class="product-container-base">
     <div class="row-base-search">
-      <SortBy :activeFilterData="activeFilterData" />
+      <SortBy :activeFilterData="activeFilterData" :productData="productData" />
     </div>
     <div class="">
       <ActiveFilters :activeFilterData="activeFilterData" />
@@ -14,7 +14,7 @@
           <span class="total-rating-text">{{ product.ratingtotal }}</span>
         </div>
         <a href="#" target="_blank" @click.prevent>
-          <img :src="product.image_list" alt="Product Image" id="product-card-img">
+          <img :src="product.image_list" alt="Product Image" id="product-card-img" class="zoom-hover">
           <div class="product-productMetaInfo">
             <h3 class="product-brand">{{ product.seller }}</h3>
             <h4 class="product-product">{{ product.name }}</h4>
@@ -62,6 +62,14 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles/globals.scss';
+
+// .zoom-hover {
+//   transition: transform 0.3s ease-in-out;
+// }
+
+// .zoom-hover:hover {
+//   transform: scale(1.2);
+// }
 
 .product-productMetaInfo {
     position: relative;
@@ -141,7 +149,12 @@ export default {
   width: 210px;
   height: 360px;
   display: inline-block;
-  margin: 0 10px 30px 10px
+  margin: 0 10px 30px 10px;
+  transition: transform 0.3s ease-in-out;
+}
+#product-card-container:hover {
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
+  transform: scale(1.1);
 }
 
 #product-card-img {

@@ -1,4 +1,4 @@
-# myntra-clone-frontend
+# ecommerce_website_frontend
 
 ## Project setup
 ```

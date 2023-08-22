@@ -1,18 +1,18 @@
 <template>
   <div id="header-container">
     <div id="header-logo-container">
-      <a href="" class="logo-link">
+      <a href="/clothing-and-apparels/?p=1" class="logo-link">
         <img src="@/assets/logo.png" id="logo-img" alt="Logo" />
       </a>
     </div>
     <div id="header-navbar">
       <ul id="navbar-container">
-        <li id="navbar-item"><router-link to="/clothing-and-apparels/">CLOTHING</router-link></li>
-        <li id="navbar-item"><router-link to="/footwear/">FOOTWEAR</router-link></li>
-        <li id="navbar-item"><router-link to="/home-furnishing/">HOME & LIVING</router-link></li>
-        <li id="navbar-item"><router-link to="/personal-care/">PERSONAL CARE</router-link></li>
-        <li id="navbar-item"><router-link to="/toys-and-games/">TOYS AND GAMES</router-link></li>
-        <li id="navbar-item"><router-link to="/accessories/">ACCESSORIES</router-link></li>
+        <li id="navbar-item"><router-link to="/clothing-and-apparels/?p=1">CLOTHING</router-link></li>
+        <li id="navbar-item"><router-link to="/footwear/?p=1">FOOTWEAR</router-link></li>
+        <li id="navbar-item"><router-link to="/home-furnishing/?p=1">HOME & LIVING</router-link></li>
+        <li id="navbar-item"><router-link to="/personal-care/?p=1">PERSONAL CARE</router-link></li>
+        <li id="navbar-item"><router-link to="/toys-and-games/?p=1">TOYS AND GAMES</router-link></li>
+        <li id="navbar-item"><router-link to="/accessories/?p=1">ACCESSORIES</router-link></li>
       </ul>
     </div>
   </div>

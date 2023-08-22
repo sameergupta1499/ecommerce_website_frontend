@@ -220,8 +220,8 @@ input[type="checkbox" i] {
   top: 4px;
   left: 4px;
   z-index: 1;
-  width: 7px;
-  height: 4px;
+  width: 8px;
+  height: 5px;
   border-color: #fff;
   border-style: none none solid solid;
   border-width: 2px;
@@ -234,6 +234,7 @@ input[type="checkbox" i] {
 .common-customCheckbox input:checked~.common-checkboxIndicator {
   border: none;
   background: #ff3f6c;
+  
 }
 
 .gender-list-item {
@@ -268,7 +269,8 @@ input[type="checkbox" i] {
   visibility: visible;
   display: inline-block;
   vertical-align: middle;
-  padding: 2px;
+  padding: 7px;
+  margin-top:3px;
   text-align: center;
 }
 
@@ -284,13 +286,14 @@ input[type="checkbox" i] {
   visibility: visible;
   display: inline-block;
   vertical-align: middle;
-  padding: 2px;
+  padding: 7px;
   text-align: center;
   transform: rotate(-90deg);
   border-color: #ff3f6c;
   visibility: visible;
   background: #ff3f6c;
   box-shadow: inset 0 0 0 3px #fff;
+  margin-top:3px;
 }
 
 .common-checkboxIndicator {

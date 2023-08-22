@@ -4,7 +4,7 @@ export const initialActiveFilters = {
   category: [],
   ordering: "",
   gender: "",
-  p: ""
+  p: 1,
 };
 
 const store = createStore({
@@ -21,7 +21,7 @@ const store = createStore({
         results: [],
         seller: []
       },
-      currentFullPath:""
+      currentFullPath:"",
     };
   },
   getters: {
@@ -44,7 +44,14 @@ const store = createStore({
       state.activeFilters.category = [];
       state.activeFilters.ordering = "";
       state.activeFilters.gender = "";
-      state.activeFilters.p ="";
+      state.activeFilters.p =1;
+    },
+    updateInitialActiveFilter(state,newValue) {
+      state.activeFilters.brands = newValue.brands;
+      state.activeFilters.category = newValue.category;
+      state.activeFilters.ordering = newValue.ordering;
+      state.activeFilters.gender = newValue.gender;
+      state.activeFilters.p = newValue.p;
     }
   },
   actions: {
