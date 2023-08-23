@@ -4,7 +4,7 @@ import {serializedParams} from '@/services/utils'
 
 
 export function fetchProducts(page = "", params = {}) {
-  let url = "http://127.0.0.1:8000/api/products/";
+  let url = "http://34.235.14.121:8000/api/products/";
   if (page !== null) {
     url += page + "/";
   }
