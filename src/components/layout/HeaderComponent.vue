@@ -7,8 +7,8 @@
     </div>
     <div id="header-navbar">
       <ul id="navbar-container">
-        <li id="navbar-item"><router-link to="/clothing-and-apparels/?p=1">CLOTHING</router-link></li>
         <li id="navbar-item"><router-link to="/footwear/?p=1">FOOTWEAR</router-link></li>
+        <li id="navbar-item"><router-link to="/clothing-and-apparels/?p=1">CLOTHING</router-link></li>
         <li id="navbar-item"><router-link to="/home-furnishing/?p=1">HOME & LIVING</router-link></li>
         <li id="navbar-item"><router-link to="/personal-care/?p=1">PERSONAL CARE</router-link></li>
         <li id="navbar-item"><router-link to="/toys-and-games/?p=1">TOYS AND GAMES</router-link></li>
