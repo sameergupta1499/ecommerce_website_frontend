@@ -29,6 +29,6 @@ jobs:
         run: |
           echo "${{ secrets.RS_SSH_PRIVATE_KEY }}" > /tmp/private_key.pem
           chmod 400 /tmp/private_key.pem
-          rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no -i /tmp/private_key.pem" dist/ ec2-user@${{ HOST_NAME }}:/home/ec2-user/ecommerce_website/ecommerce_website_frontent
+          rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no -i /tmp/private_key.pem" dist/ ec2-user@${{ secrets.HOST_NAME }}:/home/ec2-user/ecommerce_website/ecommerce_website_frontent
         env:
           RS_USER: ec2-user
