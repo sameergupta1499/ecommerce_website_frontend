@@ -4,7 +4,7 @@ import ProductPage from '../views/ProductPage'
 const router = createRouter({
     history: createWebHistory(),
     routes: [
-        { path: '/', component: ProductPage, props: { page: 'clothing-and-apparels' } },
+        { path: '/', component: ProductPage, props: { page: 'footwear' } },
         { path: '/accessories/', component: ProductPage, props: { page: 'accessories' } },
         { path: '/clothing-and-apparels/', component: ProductPage, props: { page: 'clothing-and-apparels' } },
         { path: '/footwear/', component: ProductPage, props: { page: 'footwear' } },
