@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import ProductPage from '../views/ProductPage'
 
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHistory('/ecommerce_website_frontend/'),
     routes: [
         { path: '/', component: ProductPage, props: { page: 'footwear' } },
         { path: '/accessories/', component: ProductPage, props: { page: 'accessories' } },
