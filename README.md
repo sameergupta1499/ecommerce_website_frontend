@@ -1,24 +1,5 @@
 # ecommerce_website_frontend
 
-## Project setup
-```
-npm install
-```
+## Live Demo
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Check out the live demo of the project: <a href="https://sameergupta1499.github.io/ecommerce_website_frontend/#/?p=1" target="_blank">Ecommerce Website</a>
